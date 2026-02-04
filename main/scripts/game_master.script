@@ -1,4 +1,18 @@
+local function send_instruction_to_gui(text)
+	msg.post("/gui/text#text", "instruction", {content = hash(text)})
+end
+
+local function send_instruction_to_object(text)
+	msg.post("/background/controller#cloud", "instruction", {content = hash(text)})
+	msg.post("/bird#bird", "instruction", {content = hash(text)})
+	msg.post("/claypipe/controller#claypipe", "instruction", {content = hash(text)})
+end
+
 function init(self)
+	-- Seed random number generator for unpredictability
+	math.randomseed(os.time())
+	math.random(); math.random(); math.random();
+
 	-- 現在の画面
 	self.curr_screen = "title"
 	
@@ -51,14 +65,4 @@ function on_input(self, action_id, action)
 			sys.reboot();
 		end
 	end
-end
-
-function send_instruction_to_gui(text)
-	msg.post("/gui/text#text", "instruction", {content = hash(text)})
-end
-
-function send_instruction_to_object(text)
-	msg.post("/background/controller#cloud", "instruction", {content = hash(text)})
-	msg.post("/bird#bird", "instruction", {content = hash(text)})
-	msg.post("/claypipe/controller#claypipe", "instruction", {content = hash(text)})
 end
