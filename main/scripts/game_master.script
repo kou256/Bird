@@ -1,4 +1,11 @@
 function init(self)
+	-- Initialize RNG to ensure unpredictable game elements (pipe positions)
+	-- This fixes the issue where the game would play identically on every restart
+	math.randomseed(os.time())
+	math.random()
+	math.random()
+	math.random()
+
 	-- 現在の画面
 	self.curr_screen = "title"
 	
