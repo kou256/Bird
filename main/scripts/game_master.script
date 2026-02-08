@@ -1,4 +1,9 @@
 function init(self)
+	-- 予測不能な乱数生成のためのシード初期化
+	-- Initialize random seed for security/unpredictability
+	math.randomseed(os.time())
+	math.random()
+
 	-- 現在の画面
 	self.curr_screen = "title"
 	
