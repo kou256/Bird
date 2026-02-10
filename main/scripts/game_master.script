@@ -1,6 +1,10 @@
 function init(self)
 	-- 現在の画面
 	self.curr_screen = "title"
+
+	-- Sentinel: Seed RNG to prevent predictable gameplay (Weak RNG)
+	math.randomseed(os.time())
+	math.random(); math.random(); math.random()
 	
 	msg.post(".", "acquire_input_focus")
 end
