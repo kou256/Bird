@@ -9,7 +9,8 @@ local function send_instruction_to_object(text)
 end
 
 function init(self)
-	math.randomseed(os.time())
+	-- Improved RNG seeding using os.clock() to add entropy from CPU time
+	math.randomseed(os.time() + math.floor(os.clock() * 100000))
 	math.random();
 	math.random();
 	math.random();
