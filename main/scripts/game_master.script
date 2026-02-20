@@ -9,7 +9,15 @@ local function send_instruction_to_object(text)
 end
 
 function init(self)
-	math.randomseed(os.time())
+	-- SECURITY: Use socket.gettime() for higher entropy seeding to prevent predictable RNG
+	-- caused by os.time() (second-level precision). This mitigates potential game manipulation.
+	local seed = os.time()
+	if socket and socket.gettime then
+		seed = seed + socket.gettime() * 100000
+	else
+		seed = seed + os.clock() * 100000
+	end
+	math.randomseed(seed)
 	math.random();
 	math.random();
 	math.random();
