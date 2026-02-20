@@ -5,6 +5,17 @@ local CLAYPIPE_LIMIT_X = -432
 local CLAYPIPE_JUDGE_X = 600
 
 function init(self)
+	-- SECURITY: Use socket.gettime() for higher entropy seeding.
+	-- This handles the case where this script initializes before game_master.
+	local seed = os.time()
+	if socket and socket.gettime then
+		seed = seed + socket.gettime() * 100000
+	else
+		seed = seed + os.clock() * 100000
+	end
+	math.randomseed(seed)
+	math.random(); math.random(); math.random();
+
 	-- 土管の移動速度
 	self.SCROOL_SPEED = 12
 
