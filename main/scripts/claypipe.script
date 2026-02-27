@@ -1,3 +1,6 @@
+-- SECURITY: Import socket for high-entropy seeding
+local socket = require "socket"
+
 -- 定数
 local CLAYPIPE_MIN_Y = 252
 local CLAYPIPE_MAX_Y = 828
@@ -5,6 +8,10 @@ local CLAYPIPE_LIMIT_X = -432
 local CLAYPIPE_JUDGE_X = 600
 
 function init(self)
+	-- SECURITY: Ensure RNG is seeded even if this script loads before game_master
+	math.randomseed((socket.gettime() * 10000) % 4294967296)
+	math.random(); math.random(); math.random();
+
 	-- 土管の移動速度
 	self.SCROOL_SPEED = 12
 
