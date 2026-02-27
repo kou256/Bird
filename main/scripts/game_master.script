@@ -1,3 +1,6 @@
+-- SECURITY: Import socket for high-entropy seeding
+local socket = require "socket"
+
 local function send_instruction_to_gui(text)
 	msg.post("/gui/text#text", "instruction", {content = hash(text)})
 end
@@ -9,7 +12,8 @@ local function send_instruction_to_object(text)
 end
 
 function init(self)
-	math.randomseed(os.time())
+	-- SECURITY: Use high-entropy seeding to prevent predictable game states
+	math.randomseed((socket.gettime() * 10000) % 4294967296)
 	math.random();
 	math.random();
 	math.random();

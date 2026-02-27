@@ -1,0 +1,4 @@
+## 2024-10-24 - Defold RNG Initialization Race Condition
+**Vulnerability:** Lua's `math.random` relies on global state. In Defold, script initialization order isn't strictly guaranteed across different game objects. If a script like `claypipe.script` initializes and uses `math.random` before the main controller `game_master.script` seeds the RNG, it will use the default seed, leading to predictable game state.
+**Learning:** Centralized seeding in a single script (like `game_master`) is insufficient in engines with non-deterministic initialization orders for distributed objects.
+**Prevention:** Each script that relies on RNG for critical game logic during its `init` phase must ensure the RNG is seeded, or the game architecture must guarantee a strict initialization order (e.g., a bootstrap script that spawns others). For this fix, we are adding redundant high-entropy seeding to critical components.
