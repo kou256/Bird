@@ -9,7 +9,9 @@ local function send_instruction_to_object(text)
 end
 
 function init(self)
-	math.randomseed(os.time())
+	-- SECURITY: Use high-entropy seed to prevent predictable random numbers
+	local socket = require("socket")
+	math.randomseed((socket.gettime() * 10000) % 4294967296)
 	math.random();
 	math.random();
 	math.random();
