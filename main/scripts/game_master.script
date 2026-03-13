@@ -8,8 +8,11 @@ local function send_instruction_to_object(text)
 	msg.post("/claypipe/controller#claypipe", "instruction", {content = hash(text)})
 end
 
+local socket = require 'socket'
+
 function init(self)
-	math.randomseed(os.time())
+	-- Use high-entropy seeding to prevent predictable RNG
+	math.randomseed((socket.gettime() * 10000) % 4294967296)
 	math.random();
 	math.random();
 	math.random();
