@@ -1,0 +1,4 @@
+## 2024-05-18 - Weak RNG Seeding in Lua
+**Vulnerability:** The application was using `os.time()` as the seed for Lua's `math.randomseed()`. `os.time()` only provides second-level resolution, making the random sequence highly predictable for concurrent or closely timed sessions, which can lead to exploitable game state generation.
+**Learning:** For game state and application logic requiring robust RNG, high-entropy seeds are essential. `socket.gettime()` from LuaSocket provides sub-second resolution. Furthermore, when using `socket.gettime() * 10000`, integer overflow in Lua 5.3+ or engine implementations can occur and ruin the entropy. Modulo arithmetic (e.g., `% 4294967296`) is necessary to prevent overflow issues and maintain valid seed ranges.
+**Prevention:** Always use `socket.gettime()` with proper modulo arithmetic (`(socket.gettime() * 10000) % 4294967296`) when seeding `math.random` in Defold/Lua projects instead of `os.time()`.
