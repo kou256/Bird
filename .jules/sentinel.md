@@ -1,0 +1,4 @@
+## 2024-05-18 - Improve Lua RNG Entropy
+**Vulnerability:** Weak random number generation due to seeding `math.randomseed` with `os.time()`, which only changes once per second. This makes the game's initial state predictable if the startup time is known.
+**Learning:** `os.time()` provides low entropy (1 second resolution). In a fast-starting environment like Defold, multiple instances or rapid restarts could get the exact same seed. The LuaSocket library (`socket.gettime()`) provides millisecond resolution for much higher entropy.
+**Prevention:** Always use a high-resolution timer like `socket.gettime()` combined with modulo arithmetic to fit within integer limits (e.g., `math.floor((socket.gettime() * 10000) % 4294967296)`) when initializing RNG for game logic or security-sensitive features.
